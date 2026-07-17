@@ -5,3 +5,6 @@ scikit-learn
 matplotlib
 jupyter
 ipykernel
+pyarrow
+implicit
+faiss-cpu

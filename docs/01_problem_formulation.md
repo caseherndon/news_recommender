@@ -22,8 +22,6 @@ $c_{ui}$ is the confidence weight, defined by $c_{ui}=1+\alpha R_{ui}$, where $\
 
 $\lambda (\|P\|_{F}^{2}+\|Q\|_{F}^{2})$ is a regularization term. The squared Frobenius norms $\|P\|_{F}^{2}$ and $\|Q\|_{F}^{2}$ measure the total squared magnitude of all elements in the user and item latent factor matrices. This term penalizes overly large latent factors and helps prevent overfitting. Without it, the model might fit the training data too closely by learning very large or highly specialized embeddings. $\lambda$ controls the strength of this penalty.
 
-
-
-## 4. Explicit feedback and implicit feedback
+### Explicit feedback and implicit feedback
 
 In implicit feedback recommendation, we sum over all elements of the observed user-item interaction matrix rather than only the non-zero elements. This differs from the standard explicit-feedback matrix factorization objective, such as movie ratings, where the loss is usually computed only over observed ratings. Missing ratings are truly unknown and should not be treated as zero. In implicit feedback, however, a clicked element is a strong positive signal, but an unclicked element is not necessarily a strong negative signal. It may mean the user disliked the item, but it may also mean the user was never exposed to it. Therefore, we should not simply discard all zero elements. If we only trained on clicked elements, the model would learn to predict high values for those items, but it would have no signal telling it to predict lower values for unclicked items. By considering all user-item pairs and weighting them by confidence, the model is encouraged to assign high scores to clicked items while keeping the scores of unclicked items relatively low, but only with low confidence.

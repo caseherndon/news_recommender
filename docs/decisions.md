@@ -15,3 +15,7 @@ Processed data is stored as Parquet files because they are columnar, compress we
 ## 7/18/26 - Combine train and dev news metadata in one dataset
 
 Because news items are so heavily shared between train and dev datasets, it's more efficient to combine them together. This also allows for a check to make sure the metadata matches between both the train and dev news datasets.
+
+## 7/20/26 - Filter train/dev interaction tables to positives only before building sparse matrices
+
+`train_with_news` / `dev_with_news` are built by merging *all* parsed interaction rows (history + impressions, both click=0 and click=1) with news metadata. Before constructing the CSR interaction matrices, rows must be filtered to only `source == "history"` or (`source == "impression"` and `click == 1`). Otherwise click=0 (exposed-but-not-clicked) impressions would be counted as positive interactions. This filter is applied at matrix-construction time rather than at merge time, so `train_with_news`/`dev_with_news` retain full impression logs (including click=0) for potential future use, e.g. negative sampling.

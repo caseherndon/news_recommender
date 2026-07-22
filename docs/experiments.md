@@ -45,3 +45,30 @@ Only 5,943 of the 50,000 dev users (about 12%) also appear in train — a much s
 
 **Interpretation:**
 The 49,108 vs 50,000 discrepancy stems from a bug in an earlier, non-production version of the parsing step, not the current pipeline. The current pipeline instead needs an explicit click-filter step before matrix construction (see decisions.md 7/20/26).
+
+## 2026-07-21 — Day 6: Popularity baseline
+
+**Popularity score summary (train interaction counts):**
+- Min interactions: 1.0
+- Max interactions: 4747.0
+- Mean interactions per item: 28.81
+
+**Top items:**
+- Kevin Spacey Won't Be Charged in Sexual Assault Case After Accuser Dies (movies)
+- Joe Biden reportedly denied Communion at a South Carolina church (news)
+- 'Wheel Of Fortune' Guest Delivers Hilarious, Oblivious... (tv)
+- Miguel Cervantes' Wife Reveals Daughter, 3, 'D... (tv)
+- Heidi Klum's 2019 Halloween Costume Transformation Is Mind-Blowing (lifestyle)
+- Former NBA first-round pick Jim Farmer arrested (sports)
+- Four flight attendants were arrested in Miami's airport (news)
+- Charles Rogers, former Michigan State football, Detroit Lions star, dead at 38 (sports)
+- College gymnast dies following training accident (news)
+- Porsche launches into second story of New Jersey building, killing 2 (news)
+
+Category counts (top 10): news 4, tv 2, sports 2, movies 1, lifestyle 1
+
+**Leakage check:**
+- Seen-item leakage violations across sample users: 0 (Cell 9 assertion passed)
+
+**Interpretation:**
+Popularity is dominated by a small number of high-traffic items, mostly hard news, tabloid/celebrity, and sports stories. News is the single largest category among the top 10, setting up the popularity-bias analysis planned for a later phase. Because exclusion is per-user (train-seen items only), sample users U100 and U1000 had no overlap in their seen items, so they received identical top-10 popularity lists — this is expected behavior for a global, non-personalized baseline rather than a bug.
